@@ -1,5 +1,7 @@
 from room import Room
 from player import Player
+from item import Item
+import time
 
 # Declare all the rooms
 
@@ -22,6 +24,20 @@ chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
 
+items = {
+    'sword': Item("Sword", "A rusty looking sword."),
+    'ring': Item("Ring", "An ancient ring imbued with unknown power."),
+    'light': Item("Lantern", "It has a little oil left."),
+    'boots': Item("Boots", "As good as new"),
+    'bone': Item("Bone", "It's over a foot long")
+}
+
+# Put the items in the rooms
+room['outside'].addItem(items['boots'])
+room['foyer'].addItem(items['sword'])
+room['overlook'].addItem(items['light'])
+room['narrow'].addItem(items['bone'])
+room['treasure'].addItem(items['ring'])
 
 # Link rooms together
 
@@ -54,10 +70,18 @@ player = Player("Eric", room['outside'])
 choice = "new"
 while choice != "q":
     if choice == "Invalid choice":
-        print("Invalid choice: Please enter n, s, e, w, or q")
+        print("Invalid choice: Please enter a direction(n, s, e, w)\n or a command(get/take/drop item_name)\n or i for inventory,\n or q to quit")
     else:
+        time.sleep(1)
+        print("\n-----------------\n")
+        print("Room name:")
         player.printRoomName()
+        print("\nRoom description:")
         player.printDescription()
+        print("\nItems in the room:")
+        player.room.printItems()
+        print("\nYour items:")
+        player.printItems()
     
-    choice = input("Enter command: ")
-    choice = player.move(choice)
+    choice = input("\nEnter command: ")
+    choice = player.command(choice)
